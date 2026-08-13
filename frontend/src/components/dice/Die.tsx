@@ -86,8 +86,8 @@ export function Die({ value, held, rollToken, interactive, onToggleHold }: DiePr
     setPhase('shaking')
     const dirX = Math.random() < 0.5 ? -1 : 1
     const dirY = Math.random() < 0.5 ? -1 : 1
-    const speedX = dirX * (420 + Math.random() * 280)
-    const speedY = dirY * (520 + Math.random() * 380)
+    const speedX = dirX * (320 + Math.random() * 220)
+    const speedY = dirY * (400 + Math.random() * 300)
 
     let raf = 0
     let last = performance.now()
