@@ -11,7 +11,7 @@ export function DiceTray() {
 
   return (
     <div className="flex flex-col items-center gap-2 rounded-2xl border border-hairline bg-surface px-4 py-8 sm:px-6 sm:py-10">
-      <div className="flex items-center justify-center gap-3 sm:gap-5">
+      <div className="flex items-center justify-center gap-5 sm:gap-5">
         {game.dice.map((value, i) => (
           <Die
             key={i}

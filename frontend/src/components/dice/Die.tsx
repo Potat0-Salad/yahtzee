@@ -58,7 +58,14 @@ function landingTarget(current: number, targetMod: number, direction: number, ex
 export function Die({ value, held, rollToken, interactive, onToggleHold }: DieProps) {
   const cubeRef = useRef<HTMLDivElement>(null)
   const [phase, setPhase] = useState<Phase>('idle')
-  const mounted = useRef(false)
+  // The rollToken we've already animated (or skipped) for. Comparing against
+  // this — rather than a plain "have we mounted yet" flag — keeps a fresh
+  // mount (a new player's turn swaps PassOverlay back out for the dice)
+  // from spinning for a roll that already happened last turn. A boolean
+  // mounted-flag doesn't survive React StrictMode's dev-only double-invoke
+  // of mount effects, which was letting that stale rollToken slip through
+  // on the second invocation and trigger a spurious spin.
+  const lastAnimatedToken = useRef(rollToken)
   const rot = useRef<Rotation>(LAND_ROTATION[1])
 
   useEffect(() => {
@@ -68,13 +75,13 @@ export function Die({ value, held, rollToken, interactive, onToggleHold }: DiePr
       }
     }
 
-    if (!mounted.current) {
-      mounted.current = true
+    if (held || rollToken === lastAnimatedToken.current) {
       rot.current = { ...LAND_ROTATION[Math.max(value, 1)] }
       applyTransform()
       return
     }
-    if (held || rollToken === 0) return
+    lastAnimatedToken.current = rollToken
+    if (rollToken === 0) return
 
     setPhase('shaking')
     const dirX = Math.random() < 0.5 ? -1 : 1
@@ -161,10 +168,10 @@ export function Die({ value, held, rollToken, interactive, onToggleHold }: DiePr
           <div
             key={face.value}
             style={{ transform: face.transform, backfaceVisibility: 'hidden' }}
-            className={`absolute inset-0 rounded-2xl border-[4px] bg-ink ${
+            className={`absolute inset-0 rounded-2xl border-[3px] bg-ink ${
               held
-                ? 'border-accent shadow-[4px_4px_0_0_var(--color-accent)]'
-                : 'border-line shadow-[4px_4px_0_0_var(--color-line)]'
+                ? 'border-accent shadow-[2px_2px_0_0_var(--color-accent)]'
+                : 'border-line shadow-[2px_2px_0_0_var(--color-line)]'
             }`}
           >
             <span className="absolute inset-[16%] grid grid-cols-3 grid-rows-3">
