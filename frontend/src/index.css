@@ -31,29 +31,20 @@
   }
 }
 
-@keyframes dice-shake {
-  0% {
-    transform: perspective(400px) rotateX(0deg) rotateY(0deg);
-  }
-  100% {
-    transform: perspective(400px) rotateX(-360deg) rotateY(720deg);
-  }
-}
-
 @keyframes dice-land {
   0% {
-    transform: perspective(400px) scale(1, 1) rotateX(0deg);
+    transform: scale(1, 1);
   }
   35% {
-    transform: perspective(400px) scale(1.16, 0.86) rotateX(-12deg);
+    transform: scale(1.14, 0.88);
   }
   60% {
-    transform: perspective(400px) scale(0.93, 1.09) rotateX(6deg);
+    transform: scale(0.94, 1.08);
   }
   80% {
-    transform: perspective(400px) scale(1.04, 0.97) rotateX(-3deg);
+    transform: scale(1.03, 0.98);
   }
   100% {
-    transform: perspective(400px) scale(1, 1) rotateX(0deg);
+    transform: scale(1, 1);
   }
 }
