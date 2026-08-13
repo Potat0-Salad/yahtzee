@@ -34,22 +34,25 @@
 @keyframes dice-shake {
   0%,
   100% {
-    transform: rotate(0deg) translateY(0);
+    transform: rotate(0deg) translate(0, 0) scale(1);
   }
-  15% {
-    transform: rotate(-9deg) translateY(-3px);
+  10% {
+    transform: rotate(-22deg) translate(-3px, -7px) scale(1.06);
   }
-  35% {
-    transform: rotate(7deg) translateY(0);
+  25% {
+    transform: rotate(18deg) translate(3px, 1px) scale(0.94);
+  }
+  40% {
+    transform: rotate(-25deg) translate(-4px, -6px) scale(1.05);
   }
   55% {
-    transform: rotate(-6deg) translateY(-2px);
+    transform: rotate(16deg) translate(3px, 0) scale(0.95);
   }
-  75% {
-    transform: rotate(5deg) translateY(0);
+  70% {
+    transform: rotate(-17deg) translate(-3px, -5px) scale(1.04);
   }
-  90% {
-    transform: rotate(-2deg) translateY(-1px);
+  85% {
+    transform: rotate(9deg) translate(2px, 0) scale(0.97);
   }
 }
 

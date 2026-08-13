@@ -10,17 +10,22 @@ export function DiceTray() {
   const interactive = game.phase === 'selecting_keep' && game.rollNumber >= 1
 
   return (
-    <div className="flex items-center justify-center gap-3 rounded-2xl border border-hairline bg-surface px-4 py-10 sm:gap-4">
-      {game.dice.map((value, i) => (
-        <Die
-          key={i}
-          value={value}
-          held={game.held[i]}
-          rollToken={rollToken}
-          interactive={interactive}
-          onToggleHold={() => toggleHold(i)}
-        />
-      ))}
+    <div className="flex flex-col items-center gap-2 rounded-2xl border border-hairline bg-surface px-4 py-8 sm:py-10">
+      <div className="flex items-center justify-center gap-3 sm:gap-4">
+        {game.dice.map((value, i) => (
+          <Die
+            key={i}
+            value={value}
+            held={game.held[i]}
+            rollToken={rollToken}
+            interactive={interactive}
+            onToggleHold={() => toggleHold(i)}
+          />
+        ))}
+      </div>
+      <p className={`text-xs text-ink-faint ${interactive ? '' : 'invisible'}`}>
+        Tap a die to hold it
+      </p>
     </div>
   )
 }
