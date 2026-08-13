@@ -1,0 +1,23 @@
+# --- frontend ---
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# --- backend ---
+backend/.venv/
+backend/**/__pycache__/
+backend/*.sqlite3
+backend/staticfiles/
+
+# --- env ---
+.env
+.env.*
+!.env.example
+!frontend/.env.example
+!backend/.env.example
+
+# --- editors / os ---
+.DS_Store
+.vscode/
+.idea/
+*.log
