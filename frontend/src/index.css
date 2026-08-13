@@ -32,51 +32,28 @@
 }
 
 @keyframes dice-shake {
-  0%,
+  0% {
+    transform: perspective(400px) rotateX(0deg) rotateY(0deg);
+  }
   100% {
-    transform: rotate(0deg) translate(0, 0) scale(1);
-  }
-  10% {
-    transform: rotate(-22deg) translate(-3px, -7px) scale(1.06);
-  }
-  25% {
-    transform: rotate(18deg) translate(3px, 1px) scale(0.94);
-  }
-  40% {
-    transform: rotate(-25deg) translate(-4px, -6px) scale(1.05);
-  }
-  55% {
-    transform: rotate(16deg) translate(3px, 0) scale(0.95);
-  }
-  70% {
-    transform: rotate(-17deg) translate(-3px, -5px) scale(1.04);
-  }
-  85% {
-    transform: rotate(9deg) translate(2px, 0) scale(0.97);
+    transform: perspective(400px) rotateX(-360deg) rotateY(720deg);
   }
 }
 
 @keyframes dice-land {
   0% {
-    transform: scale(1, 1) rotate(0deg);
+    transform: perspective(400px) scale(1, 1) rotateX(0deg);
   }
   35% {
-    transform: scale(1.22, 0.8) rotate(-3deg);
+    transform: perspective(400px) scale(1.16, 0.86) rotateX(-12deg);
   }
   60% {
-    transform: scale(0.9, 1.12) rotate(2deg);
+    transform: perspective(400px) scale(0.93, 1.09) rotateX(6deg);
   }
   80% {
-    transform: scale(1.05, 0.96) rotate(-1deg);
+    transform: perspective(400px) scale(1.04, 0.97) rotateX(-3deg);
   }
   100% {
-    transform: scale(1, 1) rotate(0deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dice-shake,
-  .dice-land {
-    animation: none !important;
+    transform: perspective(400px) scale(1, 1) rotateX(0deg);
   }
 }

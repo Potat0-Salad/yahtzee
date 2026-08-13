@@ -13,7 +13,7 @@ interface DieProps {
 
 type Phase = 'idle' | 'shaking' | 'landing'
 
-const SHAKE_TICK_MS = 70
+const SHAKE_TICK_MS = 90
 
 export function Die({ value, held, rollToken, interactive, onToggleHold }: DieProps) {
   const [displayValue, setDisplayValue] = useState(value)
@@ -67,8 +67,10 @@ export function Die({ value, held, rollToken, interactive, onToggleHold }: DiePr
           ? 'border-accent bg-ink shadow-[4px_4px_0_0_var(--color-accent)] -translate-y-1'
           : 'border-line bg-ink shadow-[4px_4px_0_0_var(--color-line)]'
       } ${dimmed ? 'opacity-50' : ''} ${interactive && !held ? 'active:translate-y-0.5 active:shadow-[2px_2px_0_0_var(--color-line)]' : ''} ${
-        phase === 'shaking' ? 'animate-[dice-shake_0.22s_ease-in-out_infinite]' : ''
-      } ${phase === 'landing' ? 'animate-[dice-land_0.32s_ease-out_1]' : ''}`}
+        phase === 'shaking'
+          ? 'animate-[dice-shake_0.65s_linear_infinite] motion-reduce:animate-none'
+          : ''
+      } ${phase === 'landing' ? 'animate-[dice-land_0.32s_ease-out_1] motion-reduce:animate-none' : ''}`}
     >
       <span className="absolute inset-[16%] grid grid-cols-3 grid-rows-3">
         {pips.map((p, i) => (
