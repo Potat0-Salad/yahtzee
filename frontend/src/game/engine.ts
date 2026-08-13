@@ -59,7 +59,10 @@ export function roll(state: GameState): GameState {
 
 export function diceSettled(state: GameState): GameState {
   if (state.phase !== 'rolling') return state
-  return { ...state, phase: 'selecting_keep' }
+  // No rolls left after this one, so there's nothing left to choose — mark
+  // every die held so the scorecard reflects "this is the final roll."
+  const held = state.rollNumber >= MAX_ROLLS ? state.held.map(() => true) : state.held
+  return { ...state, phase: 'selecting_keep', held }
 }
 
 export function toggleHold(state: GameState, index: number): GameState {
