@@ -10,8 +10,8 @@ export function DiceTray() {
   const interactive = game.phase === 'selecting_keep' && game.rollNumber >= 1
 
   return (
-    <div className="flex flex-col items-center gap-2 rounded-2xl border border-hairline bg-surface px-8 py-8 sm:py-10">
-      <div className="flex items-center justify-center gap-8 sm:gap-10">
+    <div className="flex flex-col items-center gap-2 rounded-2xl border border-hairline bg-surface px-4 py-8 sm:px-6 sm:py-10">
+      <div className="flex items-center justify-center gap-3 sm:gap-5">
         {game.dice.map((value, i) => (
           <Die
             key={i}

@@ -13,7 +13,7 @@ interface DieProps {
 type Phase = 'idle' | 'shaking' | 'landing'
 type Rotation = { x: number; y: number }
 
-const SIZE = 56
+const SIZE = 48
 const HALF = SIZE / 2
 const PERSPECTIVE = 480
 
