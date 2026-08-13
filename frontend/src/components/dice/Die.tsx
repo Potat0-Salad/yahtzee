@@ -13,8 +13,9 @@ interface DieProps {
 type Phase = 'idle' | 'shaking' | 'landing'
 type Rotation = { x: number; y: number }
 
-const SIZE = 72
+const SIZE = 56
 const HALF = SIZE / 2
+const PERSPECTIVE = 480
 
 const FACES: { value: number; transform: string }[] = [
   { value: 1, transform: `translateZ(${HALF}px)` },
@@ -144,7 +145,7 @@ export function Die({ value, held, rollToken, interactive, onToggleHold }: DiePr
             ? `Die showing ${value}, held, tap to release`
             : `Die showing ${value}, tap to hold`
       }
-      style={{ width: SIZE, height: SIZE, perspective: 320 }}
+      style={{ width: SIZE, height: SIZE, perspective: PERSPECTIVE }}
       className={`relative shrink-0 transition-[transform,opacity] duration-150 ${held ? '-translate-y-1' : ''} ${
         dimmed ? 'opacity-50' : ''
       } ${interactive && !held ? 'active:translate-y-0.5' : ''} ${
