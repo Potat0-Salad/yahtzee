@@ -1,3 +1,4 @@
+import * as engine from '@/game/engine'
 import { useGameStore } from '@/store/useGameStore'
 import { Die } from './Die'
 
@@ -5,9 +6,11 @@ export function DiceTray() {
   const game = useGameStore((s) => s.game)
   const rollToken = useGameStore((s) => s.rollToken)
   const toggleHold = useGameStore((s) => s.toggleHold)
+  const myPlayerId = useGameStore((s) => s.myPlayerId)
   if (!game) return null
 
-  const interactive = game.phase === 'selecting_keep' && game.rollNumber >= 1
+  const isMyTurn = !myPlayerId || engine.activePlayer(game).id === myPlayerId
+  const interactive = isMyTurn && game.phase === 'selecting_keep' && game.rollNumber >= 1
 
   return (
     <div className="flex flex-col items-center gap-2 rounded-2xl border border-hairline bg-surface px-4 py-8 sm:px-6 sm:py-10">

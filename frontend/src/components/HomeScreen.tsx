@@ -1,10 +1,12 @@
-import { Dices, Swords, Wifi } from 'lucide-react'
+import { Dices, History, Swords, Wifi } from 'lucide-react'
 
 interface HomeScreenProps {
   onSelectPassPlay: () => void
+  onSelectOnline: () => void
+  onViewHistory: () => void
 }
 
-export function HomeScreen({ onSelectPassPlay }: HomeScreenProps) {
+export function HomeScreen({ onSelectPassPlay, onSelectOnline, onViewHistory }: HomeScreenProps) {
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center gap-10 px-6 py-16">
       <div className="flex flex-col items-center gap-3 text-center">
@@ -26,18 +28,17 @@ export function HomeScreen({ onSelectPassPlay }: HomeScreenProps) {
           <Dices className="text-accent" size={22} />
         </button>
 
-        <div className="flex items-center justify-between rounded-2xl border border-hairline px-5 py-4 opacity-50">
+        <button
+          type="button"
+          onClick={onSelectOnline}
+          className="flex items-center justify-between rounded-2xl border border-hairline bg-surface px-5 py-4 text-left transition-colors hover:border-accent"
+        >
           <div>
             <p className="font-display text-lg font-bold text-ink">Private Lobby</p>
             <p className="text-sm text-ink-dim">Play online with a room code</p>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-xs uppercase tracking-wide text-ink-faint">
-              Phase 3
-            </span>
-            <Wifi className="text-ink-faint" size={22} />
-          </div>
-        </div>
+          <Wifi className="text-accent" size={22} />
+        </button>
 
         <div className="flex items-center justify-between rounded-2xl border border-hairline px-5 py-4 opacity-50">
           <div>
@@ -52,6 +53,15 @@ export function HomeScreen({ onSelectPassPlay }: HomeScreenProps) {
           </div>
         </div>
       </div>
+
+      <button
+        type="button"
+        onClick={onViewHistory}
+        className="mx-auto flex items-center gap-1.5 text-sm text-ink-faint transition-colors hover:text-ink"
+      >
+        <History size={14} />
+        Game history
+      </button>
     </main>
   )
 }

@@ -45,20 +45,33 @@ export const CATEGORY_LABEL: Record<Category, string> = {
 
 export type Scorecard = Partial<Record<Category, number>>
 
+export type GameMode = 'local' | 'online'
+
 export interface PlayerState {
   id: string
   name: string
   scores: Scorecard
   yahtzeeBonusCount: number
+  // Online mode only: categories a live opponent has filled but whose values
+  // the server hasn't revealed to us yet — used for scorecard-progress counts,
+  // never for score values (we never render an opponent's score cells).
+  hiddenCategories?: Category[]
+  // Online mode only: server-authoritative total. Falls back to a locally
+  // computed grandTotal() when absent (always the case in local mode).
+  total?: number
+  isConnected?: boolean
+  isActive?: boolean
 }
 
-export type GamePhase = 'setup' | 'rolling' | 'selecting_keep' | 'intermission' | 'game_over'
+export type GamePhase =
+  'setup' | 'lobby_waiting' | 'rolling' | 'selecting_keep' | 'intermission' | 'game_over'
 
 export interface LastScored {
   playerId: string
   category: Category
-  points: number
-  bonus: number
+  // Masked to null in online mode when the score belongs to another player.
+  points: number | null
+  bonus: number | null
 }
 
 export interface GameState {

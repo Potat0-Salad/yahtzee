@@ -20,9 +20,10 @@ packaging==26.3
 psycopg==3.3.4
 psycopg-binary==3.3.4
 pycparser==3.0
+PyJWT==2.13.0
 pyOpenSSL==26.4.0
 python-dotenv==1.2.2
-redis==8.1.0
+redis==5.3.1
 service-identity==26.1.0
 sqlparse==0.5.5
 Twisted==26.4.0

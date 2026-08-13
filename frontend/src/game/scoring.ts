@@ -96,6 +96,12 @@ export function grandTotal(player: PlayerState): number {
   )
 }
 
+// Prefer the server-authoritative total (online mode) over a locally computed
+// one — an in-progress opponent's hidden categories make grandTotal() wrong.
+export function displayTotal(player: PlayerState): number {
+  return player.total ?? grandTotal(player)
+}
+
 export function categoriesFilled(player: PlayerState): number {
-  return Object.keys(player.scores).length
+  return Object.keys(player.scores).length + (player.hiddenCategories?.length ?? 0)
 }

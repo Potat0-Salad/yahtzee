@@ -1,6 +1,6 @@
 import { Crown, RotateCcw } from 'lucide-react'
 import * as engine from '@/game/engine'
-import { grandTotal } from '@/game/scoring'
+import { displayTotal } from '@/game/scoring'
 import { useGameStore } from '@/store/useGameStore'
 
 export function GameOverScreen() {
@@ -9,7 +9,7 @@ export function GameOverScreen() {
   if (!game) return null
 
   const winnerIds = new Set(engine.winners(game).map((p) => p.id))
-  const ranked = [...game.players].sort((a, b) => grandTotal(b) - grandTotal(a))
+  const ranked = [...game.players].sort((a, b) => displayTotal(b) - displayTotal(a))
 
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center gap-8 px-6 py-16">
@@ -34,7 +34,7 @@ export function GameOverScreen() {
               {winnerIds.has(player.id) && <Crown className="text-accent" size={16} />}
             </div>
             <span className="font-mono text-lg font-bold tabular-nums text-ink">
-              {grandTotal(player)}
+              {displayTotal(player)}
             </span>
           </div>
         ))}

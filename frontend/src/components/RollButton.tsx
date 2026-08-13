@@ -6,16 +6,20 @@ import { useGameStore } from '@/store/useGameStore'
 export function RollButton() {
   const game = useGameStore((s) => s.game)
   const roll = useGameStore((s) => s.roll)
+  const myPlayerId = useGameStore((s) => s.myPlayerId)
   if (!game) return null
 
-  const enabled = engine.canRoll(game)
+  const isMyTurn = !myPlayerId || engine.activePlayer(game).id === myPlayerId
+  const enabled = isMyTurn && engine.canRoll(game)
   const rollsLeft = MAX_ROLLS - game.rollNumber
   const label =
     game.phase === 'rolling'
       ? 'Rolling…'
-      : game.rollNumber === 0
-        ? 'Roll'
-        : `Roll again (${rollsLeft} left)`
+      : !isMyTurn
+        ? `Waiting for ${engine.activePlayer(game).name}…`
+        : game.rollNumber === 0
+          ? 'Roll'
+          : `Roll again (${rollsLeft} left)`
 
   return (
     <button
