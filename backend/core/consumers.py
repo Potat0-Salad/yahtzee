@@ -35,6 +35,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from django.utils import timezone
 
 from core import game_engine as engine
+from core import ranked
 from core.models import GamePlayer, GameSession, GuestProfile
 
 RECONNECT_GRACE_SECONDS = 15
@@ -195,6 +196,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         for p in players:
             p.save()
         if session.phase == GameSession.Phase.GAME_OVER:
+            ranked.apply_ranked_results(session, players)
             return {
                 "game_over": True,
                 "players_summary": [self._player_summary(p) for p in players],
@@ -248,7 +250,8 @@ class GameConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def _get_session_id(self):
         session = GameSession.objects.filter(
-            room_code=self.room_code, mode=GameSession.Mode.ONLINE
+            room_code=self.room_code,
+            mode__in=[GameSession.Mode.ONLINE, GameSession.Mode.RANKED],
         ).first()
         return session.id if session else None
 
@@ -334,6 +337,8 @@ class GameConsumer(AsyncWebsocketConsumer):
             session.save()
 
         game_over = session.phase == GameSession.Phase.GAME_OVER
+        if game_over:
+            ranked.apply_ranked_results(session, players)
         return {
             "player_id": str(me.guest_id),
             "game_over": game_over,

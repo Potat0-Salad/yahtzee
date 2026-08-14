@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from core.models import GamePlayer, GameSession, GuestProfile
+from core.models import GamePlayer, GameSession, GuestProfile, RankedStats
 
 
 @admin.register(GuestProfile)
@@ -19,3 +19,10 @@ class GameSessionAdmin(admin.ModelAdmin):
     list_display = ["id", "mode", "status", "created_by", "created_at", "ended_at"]
     list_filter = ["mode", "status"]
     inlines = [GamePlayerInline]
+
+
+@admin.register(RankedStats)
+class RankedStatsAdmin(admin.ModelAdmin):
+    list_display = ["guest", "elo_rating", "games_played", "wins", "losses", "updated_at"]
+    search_fields = ["guest__display_name", "guest__id"]
+    ordering = ["-elo_rating"]

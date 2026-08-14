@@ -2,7 +2,7 @@ from django.utils import timezone
 from rest_framework import serializers
 
 from core.game_engine import LOWER_CATEGORIES, UPPER_CATEGORIES, grand_total
-from core.models import GamePlayer, GameSession, GuestProfile
+from core.models import GamePlayer, GameSession, GuestProfile, RankedStats
 
 UPPER_FIELDS = UPPER_CATEGORIES
 LOWER_FIELDS = LOWER_CATEGORIES
@@ -67,6 +67,22 @@ class RoomPlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = GamePlayer
         fields = ["player_id", "display_name", "seat_order", "is_connected"]
+
+
+class RankedStatsSerializer(serializers.ModelSerializer):
+    display_name = serializers.CharField(source="guest.display_name", read_only=True)
+    in_placement = serializers.BooleanField(read_only=True)
+
+    class Meta:
+        model = RankedStats
+        fields = [
+            "display_name",
+            "elo_rating",
+            "games_played",
+            "wins",
+            "losses",
+            "in_placement",
+        ]
 
 
 class RoomSerializer(serializers.ModelSerializer):

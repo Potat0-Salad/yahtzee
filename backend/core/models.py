@@ -125,3 +125,32 @@ class GamePlayer(models.Model):
 
     def __str__(self):
         return f"{self.display_name} in {self.session_id}"
+
+
+class RankedStats(models.Model):
+    """One guest's running Elo record. Created lazily on first read/write —
+    there's no signup step, so most guests never have a row.
+
+    No matchmaking exists yet (Phase 4 is schema + rating math only): a
+    ranked match is created the same way an online one is, just tagged
+    mode=ranked, and core.ranked computes deltas when it ends.
+    """
+
+    PLACEMENT_GAMES = 5
+    STARTING_ELO = 1200
+
+    guest = models.OneToOneField(
+        GuestProfile, on_delete=models.CASCADE, related_name="ranked_stats"
+    )
+    elo_rating = models.IntegerField(default=STARTING_ELO)
+    games_played = models.PositiveIntegerField(default=0)
+    wins = models.PositiveIntegerField(default=0)
+    losses = models.PositiveIntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.guest.display_name}: {self.elo_rating} elo ({self.games_played} games)"
+
+    @property
+    def in_placement(self) -> bool:
+        return self.games_played < self.PLACEMENT_GAMES
