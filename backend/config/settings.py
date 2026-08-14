@@ -7,6 +7,7 @@ See https://docs.djangoproject.com/en/5.2/topics/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -71,16 +73,21 @@ ASGI_APPLICATION = "config.asgi.application"
 
 # --- database ---
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+#
+# Prefers a single DATABASE_URL (what Railway/Render/Fly all inject
+# automatically for their managed Postgres) and falls back to the
+# individual POSTGRES_* vars docker-compose.yml uses for local dev.
+
+_LOCAL_POSTGRES_URL = (
+    f"postgres://{os.environ.get('POSTGRES_USER', 'yahtzee')}:"
+    f"{os.environ.get('POSTGRES_PASSWORD', 'yahtzee')}@"
+    f"{os.environ.get('POSTGRES_HOST', 'localhost')}:"
+    f"{os.environ.get('POSTGRES_PORT', '5432')}/"
+    f"{os.environ.get('POSTGRES_DB', 'yahtzee')}"
+)
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_DB", "yahtzee"),
-        "USER": os.environ.get("POSTGRES_USER", "yahtzee"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "yahtzee"),
-        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
-        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
-    }
+    "default": dj_database_url.config(default=_LOCAL_POSTGRES_URL, conn_max_age=600),
 }
 
 # --- channels / redis ---
@@ -127,4 +134,14 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Railway/Render/Fly all sit behind a reverse proxy that terminates TLS —
+# without this, Django can't tell an incoming request was actually HTTPS.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
